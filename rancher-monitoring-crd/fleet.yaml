@@ -1292,5 +1292,3 @@ helm:
       component: kube-scheduler
       enabled: true
       metricsPort: 10251
-dependsOn:
-  - name: rancher-monitoring-rancher-monitoring-crd
