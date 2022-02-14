@@ -51,9 +51,10 @@ helm:
         storage: {}
         tolerations: []
         topologySpreadConstraints: []
-        useExistingSecret: false
+        useExistingSecret: true
         volumeMounts: []
         volumes: []
+        configSecret: alertmanager-rancher-monitoring-alertmanager
       annotations: {}
       apiVersion: v2
       config:
@@ -75,9 +76,6 @@ helm:
         templates:
           - /etc/alertmanager/config/*.tmpl
       enabled: true
-      extraSecret:
-        annotations: {}
-        data: {}
       ingress:
         annotations: {}
         enabled: false
@@ -328,7 +326,6 @@ helm:
         namespace: cattle-dashboards
         useExistingNamespace: false
       defaultDashboardsEnabled: true
-      defaultDashboardsTimezone: utc
       deploymentStrategy:
         type: Recreate
       enabled: true
@@ -423,7 +420,6 @@ helm:
               enabled: false
           provider:
             allowUiUpdates: false
-          searchNamespace: cattle-dashboards
         datasources:
           annotations: {}
           createPrometheusReplicasDatasources: false
@@ -729,12 +725,10 @@ helm:
     kubeStateMetrics:
       enabled: true
       serviceMonitor:
-        honorLabels: true
         interval: ''
         metricRelabelings: []
         proxyUrl: ''
         relabelings: []
-        scrapeTimeout: ''
         selectorOverride: {}
         selfMonitor:
           enabled: false
@@ -787,9 +781,6 @@ helm:
       additionalServiceMonitors: []
       annotations: {}
       enabled: true
-      extraSecret:
-        annotations: {}
-        data: {}
       ingress:
         annotations: {}
         enabled: false
@@ -818,7 +809,6 @@ helm:
         volumes: []
       prometheusSpec:
         additionalAlertManagerConfigs: []
-        additionalAlertManagerConfigsSecret: {}
         additionalAlertRelabelConfigs: []
         additionalPrometheusSecretsAnnotations: {}
         additionalRemoteRead: []
@@ -855,12 +845,8 @@ helm:
         disableCompaction: false
         enableAdminAPI: false
         enableFeatures: []
-        enforcedLabelLimit: false
-        enforcedLabelNameLengthLimit: false
-        enforcedLabelValueLengthLimit: false
         enforcedNamespaceLabel: ''
         enforcedSampleLimit: false
-        enforcedTargetLimit: false
         evaluationInterval: 1m
         externalLabels: {}
         externalUrl: ''
@@ -987,37 +973,36 @@ helm:
         annotations: {}
         clusterIP: None
         enabled: false
-        httpNodePort: 30902
-        httpPort: 10902
-        httpPortName: http
         labels: {}
         nodePort: 30901
         port: 10901
         portName: grpc
-        targetHttpPort: http
         targetPort: grpc
         type: ClusterIP
+        httpNodePort: 30902
+        httpPort: 10902
+        httpPortName: http
+        targetHttpPort: http
       thanosServiceExternal:
         annotations: {}
         enabled: false
-        httpNodePort: 30902
-        httpPort: 10902
-        httpPortName: http
         labels: {}
-        loadBalancerIP: ''
-        loadBalancerSourceRanges: []
         nodePort: 30901
         port: 10901
         portName: grpc
-        targetHttpPort: http
         targetPort: grpc
         type: LoadBalancer
+        httpNodePort: 30902
+        httpPort: 10902
+        httpPortName: http
+        loadBalancerIP: ''
+        targetHttpPort: http
+      extraSecret:
+        annotations: {}
+        data: {}
       thanosServiceMonitor:
-        bearerTokenFile: null
         enabled: false
         interval: ''
-        metricRelabelings: []
-        relabelings: []
         scheme: ''
         tlsConfig: {}
     prometheus-adapter:
@@ -1128,16 +1113,16 @@ helm:
         relabelings: []
         scrapeTimeout: ''
         selfMonitor: true
-      thanosImage:
-        repository: rancher/mirrored-thanos-thanos
-        sha: ''
-        tag: v0.17.2
       thanosRulerInstanceNamespaces: []
       tls:
         enabled: true
         internalPort: 8443
         tlsMinVersion: VersionTLS13
       tolerations: []
+      thanosImage:
+        repository: rancher/mirrored-thanos-thanos
+        sha: ''
+        tag: v0.17.2
     rke2ControllerManager:
       clients:
         nodeSelector:
