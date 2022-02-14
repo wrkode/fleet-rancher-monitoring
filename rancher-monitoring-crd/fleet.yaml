@@ -8,20 +8,20 @@ helm:
     additionalPrometheusRulesMap: {}
     alertmanager:
       alertmanagerSpec:
-        additionalPeers: []
+        additionalPeers: null
         affinity: {}
         alertmanagerConfigNamespaceSelector: {}
         alertmanagerConfigSelector: {}
         clusterAdvertiseAddress: false
-        configMaps: []
-        containers: []
+        configMaps: null
+        containers: null
         externalUrl: null
         forceEnableClusterMode: false
         image:
           repository: rancher/mirrored-prometheus-alertmanager
           sha: ''
           tag: v0.22.2
-        initContainers: []
+        initContainers: null
         listenLocal: false
         logFormat: logfmt
         logLevel: info
@@ -42,19 +42,18 @@ helm:
             memory: 100Mi
         retention: 120h
         routePrefix: /
-        secrets: []
+        secrets: null
         securityContext:
           fsGroup: 2000
           runAsGroup: 2000
           runAsNonRoot: true
           runAsUser: 1000
         storage: {}
-        tolerations: []
-        topologySpreadConstraints: []
-        useExistingSecret: true
-        volumeMounts: []
-        volumes: []
-        configSecret: alertmanager-rancher-monitoring-alertmanager
+        tolerations: null
+        topologySpreadConstraints: null
+        useExistingSecret: false
+        volumeMounts: null
+        volumes: null
       annotations: {}
       apiVersion: v2
       config:
@@ -79,17 +78,17 @@ helm:
       ingress:
         annotations: {}
         enabled: false
-        hosts: []
+        hosts: null
         labels: {}
-        paths: []
-        tls: []
+        paths: null
+        tls: null
       ingressPerReplica:
         annotations: {}
         enabled: false
         hostDomain: ''
         hostPrefix: ''
         labels: {}
-        paths: []
+        paths: null
         tlsSecretName: ''
         tlsSecretPerReplica:
           enabled: false
@@ -101,13 +100,13 @@ helm:
       secret:
         annotations: {}
       service:
-        additionalPorts: []
+        additionalPorts: null
         annotations: {}
         clusterIP: ''
-        externalIPs: []
+        externalIPs: null
         labels: {}
         loadBalancerIP: ''
-        loadBalancerSourceRanges: []
+        loadBalancerSourceRanges: null
         nodePort: 30903
         port: 9093
         targetPort: 9093
@@ -119,16 +118,16 @@ helm:
       serviceMonitor:
         bearerTokenFile: null
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         scheme: ''
         selfMonitor: true
         tlsConfig: {}
       servicePerReplica:
         annotations: {}
         enabled: false
-        loadBalancerSourceRanges: []
+        loadBalancerSourceRanges: null
         nodePort: 30904
         port: 9093
         targetPort: 9093
@@ -264,9 +263,9 @@ helm:
         targetPort: 9153
       serviceMonitor:
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
     defaultRules:
       additionalRuleLabels: {}
       annotations: {}
@@ -306,7 +305,12 @@ helm:
         systemDefaultRegistry: ''
         windows:
           enabled: false
-      imagePullSecrets: []
+        clusterId: c-vrfqq
+        clusterName: contests
+        rkePathPrefix: ''
+        rkeWindowsPathPrefix: ''
+        url: https://rancher.azure.eng.rancher.space
+      imagePullSecrets: null
       kubectl:
         pullPolicy: IfNotPresent
         repository: rancher/kubectl
@@ -318,9 +322,23 @@ helm:
         userRoles:
           aggregateToDefaultRoles: true
           create: true
+      systemDefaultRegistry: ''
     grafana:
-      additionalDataSources: []
+      additionalDataSources: null
+      admin:
+        existingSecret: ''
+        passwordKey: admin-password
+        userKey: admin-user
       adminPassword: prom-operator
+      adminUser: admin
+      affinity: {}
+      autoscaling:
+        enabled: false
+      containerSecurityContext: {}
+      dashboardProviders: {}
+      dashboards: {}
+      dashboardsConfigMaps: {}
+      datasources: {}
       defaultDashboards:
         cleanupOnUninstall: false
         namespace: cattle-dashboards
@@ -328,8 +346,21 @@ helm:
       defaultDashboardsEnabled: true
       deploymentStrategy:
         type: Recreate
+      downloadDashboards:
+        env: {}
+        envFromSecret: ''
+        resources: {}
+      downloadDashboardsImage:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-curlimages-curl
+        sha: ''
+        tag: 7.77.0
       enabled: true
-      extraConfigmapMounts: []
+      env: {}
+      envFromSecret: ''
+      envRenderSecret: {}
+      envValueFrom: {}
+      extraConfigmapMounts: null
       extraContainerVolumes:
         - emptyDir: {}
           name: nginx-home
@@ -361,9 +392,40 @@ helm:
           securityContext:
             runAsUser: 101
             runAsGroup: 101
+      extraEmptyDirMounts: null
+      extraExposePorts: null
+      extraInitContainers: null
+      extraLabels: {}
+      extraSecretMounts: null
+      extraVolumeMounts: null
       forceDeployDashboards: false
       forceDeployDatasources: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       grafana.ini:
+        analytics:
+          check_for_updates: true
         auth:
           disable_login_form: false
         auth.anonymous:
@@ -373,22 +435,111 @@ helm:
           enabled: false
         dashboards:
           default_home_dashboard_path: /tmp/dashboards/rancher-default-home.json
+        grafana_net:
+          url: https://grafana.net
+        log:
+          mode: console
+        paths:
+          data: /var/lib/grafana/
+          logs: /var/log/grafana
+          plugins: /var/lib/grafana/plugins
+          provisioning: /etc/grafana/provisioning
         security:
           allow_embedding: true
         users:
           auto_assign_org_role: Viewer
+      hostAliases: null
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-grafana-grafana
+        sha: ''
+        tag: 7.5.8
+      imageRenderer:
+        enabled: false
+        env:
+          HTTP_HOST: 0.0.0.0
+        grafanaSubPath: ''
+        hostAliases: null
+        image:
+          pullPolicy: Always
+          repository: rancher/mirrored-grafana-grafana-image-renderer
+          sha: ''
+          tag: 3.0.1
+        networkPolicy:
+          limitEgress: false
+          limitIngress: true
+        podPortName: http
+        priorityClassName: ''
+        replicas: 1
+        resources: {}
+        revisionHistoryLimit: 10
+        securityContext: {}
+        service:
+          enabled: true
+          port: 8081
+          portName: http
+          targetPort: 8081
+        serviceAccountName: ''
       ingress:
         annotations: {}
         enabled: false
-        hosts: []
+        extraPaths: null
+        hosts: null
         labels: {}
         path: /
-        tls: []
+        pathType: Prefix
+        tls: null
+      initChownData:
+        enabled: true
+        image:
+          pullPolicy: IfNotPresent
+          repository: rancher/mirrored-library-busybox
+          sha: ''
+          tag: 1.31.1
+        resources: {}
+      ldap:
+        config: ''
+        enabled: false
+        existingSecret: ''
+      livenessProbe:
+        failureThreshold: 10
+        httpGet:
+          path: /api/health
+          port: 3000
+        initialDelaySeconds: 60
+        timeoutSeconds: 30
       namespaceOverride: ''
+      nodeSelector: {}
+      notifiers: {}
+      persistence:
+        accessModes:
+          - ReadWriteOnce
+        enabled: false
+        finalizers:
+          - kubernetes.io/pvc-protection
+        inMemory:
+          enabled: false
+        size: 10Gi
+        type: pvc
+      plugins: null
+      podDisruptionBudget: {}
+      podPortName: grafana
       proxy:
         image:
           repository: rancher/mirrored-library-nginx
           tag: 1.21.1-alpine
+      rbac:
+        create: true
+        extraClusterRoleRules: null
+        extraRoleRules: null
+        namespaced: false
+        pspAnnotations: {}
+        pspEnabled: true
+      readinessProbe:
+        httpGet:
+          path: /api/health
+          port: 3000
+      replicas: 1
       resources:
         limits:
           cpu: 200m
@@ -396,45 +547,114 @@ helm:
         requests:
           cpu: 100m
           memory: 100Mi
+      revisionHistoryLimit: 10
+      securityContext:
+        fsGroup: 472
+        runAsGroup: 472
+        runAsNonRoot: true
+        runAsUser: 472
       service:
+        annotations: {}
+        enabled: true
+        labels: {}
         nodePort: 30950
         port: 80
         portName: nginx-http
         targetPort: 8080
         type: ClusterIP
+      serviceAccount:
+        create: true
       serviceMonitor:
+        enabled: false
         interval: ''
-        metricRelabelings: []
+        labels: {}
+        metricRelabelings: null
         path: /metrics
-        relabelings: []
+        relabelings: null
+        scheme: http
+        scrapeTimeout: 30s
         selfMonitor: true
+        tlsConfig: {}
       sidecar:
         dashboards:
+          SCProvider: true
           annotations: {}
+          defaultFolderName: null
           enabled: true
+          folder: /tmp/dashboards
+          folderAnnotation: null
           label: grafana_dashboard
-          multicluster:
-            etcd:
-              enabled: false
-            global:
-              enabled: false
+          labelValue: null
+          multicluster: false
           provider:
             allowUiUpdates: false
+            disableDelete: false
+            folder: ''
+            foldersFromFilesStructure: false
+            name: sidecarProvider
+            orgid: 1
+            type: file
+          resource: both
+          searchNamespace: cattle-dashboards
         datasources:
           annotations: {}
           createPrometheusReplicasDatasources: false
           defaultDatasourceEnabled: true
           enabled: true
           label: grafana_datasource
+          labelValue: null
+          resource: both
+          searchNamespace: null
+        enableUniqueFilenames: false
+        image:
+          repository: rancher/mirrored-kiwigrid-k8s-sidecar
+          sha: ''
+          tag: 1.12.2
+        imagePullPolicy: IfNotPresent
+        notifiers:
+          enabled: false
+          label: grafana_notifier
+          resource: both
+        resources: {}
+      smtp:
+        existingSecret: ''
+        passwordKey: password
+        userKey: user
       testFramework:
-        enabled: false
+        enabled: true
+        image: rancher/mirrored-bats-bats
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        tag: v1.1.0
+      tolerations: null
     hardenedKubelet:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
         https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
           enabled: true
           insecureSkipVerify: true
+          keyFile: ''
           useServiceAccountCredentials: true
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10015
+        proxyUrl: ''
         rbac:
           additionalRules:
             - nonResourceURLs:
@@ -447,6 +667,7 @@ helm:
                 - nodes/metrics
               verbs:
                 - get
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -455,8 +676,44 @@ helm:
         useLocalhost: true
       component: kubelet
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10250
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
       serviceMonitor:
+        enabled: true
         endpoints:
           - honorLabels: true
             port: metrics
@@ -480,7 +737,33 @@ helm:
                 targetLabel: metrics_path
     hardenedNodeExporter:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10016
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -489,7 +772,46 @@ helm:
         useLocalhost: true
       component: node-exporter
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 9796
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     ingressNginx:
       enabled: true
       namespace: ingress-nginx
@@ -498,16 +820,35 @@ helm:
         targetPort: 10254
       serviceMonitor:
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
     k3sServer:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
         https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
           enabled: true
           insecureSkipVerify: true
+          keyFile: ''
           useServiceAccountCredentials: true
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10013
+        proxyUrl: ''
         rbac:
           additionalRules:
             - nonResourceURLs:
@@ -520,6 +861,7 @@ helm:
                 - nodes/metrics
               verbs:
                 - get
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -528,8 +870,44 @@ helm:
         useLocalhost: true
       component: k3s-server
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10250
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
       serviceMonitor:
+        enabled: true
         endpoints:
           - honorLabels: true
             port: metrics
@@ -552,11 +930,93 @@ helm:
                   - __metrics_path__
                 targetLabel: metrics_path
     kube-state-metrics:
+      affinity: {}
+      autosharding:
+        enabled: false
+      collectors:
+        certificatesigningrequests: true
+        configmaps: true
+        cronjobs: true
+        daemonsets: true
+        deployments: true
+        endpoints: true
+        horizontalpodautoscalers: true
+        ingresses: true
+        jobs: true
+        limitranges: true
+        mutatingwebhookconfigurations: true
+        namespaces: true
+        networkpolicies: true
+        nodes: true
+        persistentvolumeclaims: true
+        persistentvolumes: true
+        poddisruptionbudgets: true
+        pods: true
+        replicasets: true
+        replicationcontrollers: true
+        resourcequotas: true
+        secrets: true
+        services: true
+        statefulsets: true
+        storageclasses: true
+        validatingwebhookconfigurations: true
+        verticalpodautoscalers: false
+        volumeattachments: true
+      containerSecurityContext: {}
+      customLabels: {}
+      extraArgs: null
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
+      hostNetwork: false
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-kube-state-metrics-kube-state-metrics
+        tag: v2.0.0
+      imagePullSecrets: null
+      kubeTargetVersionOverride: ''
+      kubeconfig:
+        enabled: false
       namespaceOverride: ''
+      namespaces: ''
+      nodeSelector: {}
+      podAnnotations: {}
+      podDisruptionBudget: {}
       podSecurityPolicy:
+        additionalVolumes: null
+        annotations: {}
         enabled: true
+      prometheus:
+        monitor:
+          additionalLabels: {}
+          enabled: false
+          honorLabels: false
+          namespace: ''
+      prometheusScrape: true
       rbac:
         create: true
+        useClusterRole: true
+      replicas: 1
       resources:
         limits:
           cpu: 100m
@@ -564,15 +1024,55 @@ helm:
         requests:
           cpu: 100m
           memory: 130Mi
+      securityContext:
+        enabled: true
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      selfMonitor:
+        enabled: false
+      service:
+        annotations: {}
+        loadBalancerIP: ''
+        nodePort: 0
+        port: 8080
+        type: ClusterIP
+      serviceAccount:
+        annotations: {}
+        create: true
+        imagePullSecrets: null
+      tolerations: null
     kubeAdmControllerManager:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
         https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
           enabled: true
           insecureSkipVerify: true
+          keyFile: ''
           useServiceAccountCredentials: true
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/master: ''
         port: 10011
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -581,12 +1081,76 @@ helm:
         useLocalhost: true
       component: kube-controller-manager
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10257
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     kubeAdmEtcd:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/master: ''
         port: 10014
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -595,10 +1159,75 @@ helm:
         useLocalhost: true
       component: kube-etcd
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 2381
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     kubeAdmProxy:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10013
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -607,16 +1236,76 @@ helm:
         useLocalhost: true
       component: kube-proxy
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10249
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     kubeAdmScheduler:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
         https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
           enabled: true
           insecureSkipVerify: true
+          keyFile: ''
           useServiceAccountCredentials: true
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/master: ''
         port: 10012
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -625,15 +1314,54 @@ helm:
         useLocalhost: true
       component: kube-scheduler
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10259
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     kubeApiServer:
       enabled: true
       serviceMonitor:
         interval: ''
         jobLabel: component
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         selector:
           matchLabels:
             component: apiserver
@@ -643,7 +1371,7 @@ helm:
         serverName: kubernetes
     kubeControllerManager:
       enabled: false
-      endpoints: []
+      endpoints: null
       service:
         enabled: true
         port: 10252
@@ -653,9 +1381,9 @@ helm:
         https: false
         insecureSkipVerify: null
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         serverName: null
     kubeDns:
       enabled: false
@@ -667,15 +1395,15 @@ helm:
           port: 10055
           targetPort: 10055
       serviceMonitor:
-        dnsmasqMetricRelabelings: []
-        dnsmasqRelabelings: []
+        dnsmasqMetricRelabelings: null
+        dnsmasqRelabelings: null
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
     kubeEtcd:
       enabled: false
-      endpoints: []
+      endpoints: null
       service:
         enabled: true
         port: 2379
@@ -687,14 +1415,14 @@ helm:
         insecureSkipVerify: false
         interval: ''
         keyFile: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         scheme: http
         serverName: ''
     kubeProxy:
       enabled: false
-      endpoints: []
+      endpoints: null
       service:
         enabled: true
         port: 10249
@@ -703,12 +1431,12 @@ helm:
         enabled: true
         https: false
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
     kubeScheduler:
       enabled: false
-      endpoints: []
+      endpoints: null
       service:
         enabled: true
         port: 10251
@@ -718,20 +1446,19 @@ helm:
         https: false
         insecureSkipVerify: null
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         serverName: null
     kubeStateMetrics:
       enabled: true
       serviceMonitor:
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
+        namespaceOverride: ''
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         selectorOverride: {}
-        selfMonitor:
-          enabled: false
     kubeTargetVersionOverride: ''
     kubeVersionOverride: ''
     kubelet:
@@ -739,16 +1466,16 @@ helm:
       namespace: kube-system
       serviceMonitor:
         cAdvisor: true
-        cAdvisorMetricRelabelings: []
+        cAdvisorMetricRelabelings: null
         cAdvisorRelabelings:
           - sourceLabels:
               - __metrics_path__
             targetLabel: metrics_path
         https: true
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         probes: true
-        probesMetricRelabelings: []
+        probesMetricRelabelings: null
         probesRelabelings:
           - sourceLabels:
               - __metrics_path__
@@ -771,30 +1498,30 @@ helm:
       jobLabel: jobLabel
       serviceMonitor:
         interval: ''
-        metricRelabelings: []
+        metricRelabelings: null
         proxyUrl: ''
-        relabelings: []
+        relabelings: null
         scrapeTimeout: ''
     prometheus:
-      additionalPodMonitors: []
-      additionalRulesForClusterRole: []
-      additionalServiceMonitors: []
+      additionalPodMonitors: null
+      additionalRulesForClusterRole: null
+      additionalServiceMonitors: null
       annotations: {}
       enabled: true
       ingress:
         annotations: {}
         enabled: false
-        hosts: []
+        hosts: null
         labels: {}
-        paths: []
-        tls: []
+        paths: null
+        tls: null
       ingressPerReplica:
         annotations: {}
         enabled: false
         hostDomain: ''
         hostPrefix: ''
         labels: {}
-        paths: []
+        paths: null
         tlsSecretName: ''
         tlsSecretPerReplica:
           enabled: false
@@ -804,23 +1531,23 @@ helm:
         maxUnavailable: ''
         minAvailable: 1
       podSecurityPolicy:
-        allowedCapabilities: []
-        allowedHostPaths: []
-        volumes: []
+        allowedCapabilities: null
+        allowedHostPaths: null
+        volumes: null
       prometheusSpec:
-        additionalAlertManagerConfigs: []
-        additionalAlertRelabelConfigs: []
+        additionalAlertManagerConfigs: null
+        additionalAlertRelabelConfigs: null
         additionalPrometheusSecretsAnnotations: {}
-        additionalRemoteRead: []
-        additionalRemoteWrite: []
-        additionalScrapeConfigs: []
+        additionalRemoteRead: null
+        additionalRemoteWrite: null
+        additionalScrapeConfigs: null
         additionalScrapeConfigsSecret: {}
         affinity: {}
-        alertingEndpoints: []
+        alertingEndpoints: null
         allowOverlappingBlocks: false
         apiserverConfig: {}
         arbitraryFSAccessThroughSMs: false
-        configMaps: []
+        configMaps: null
         containers: |
           - name: prometheus-proxy
             args:
@@ -844,7 +1571,7 @@ helm:
               runAsGroup: 101
         disableCompaction: false
         enableAdminAPI: false
-        enableFeatures: []
+        enableFeatures: null
         enforcedNamespaceLabel: ''
         enforcedSampleLimit: false
         evaluationInterval: 1m
@@ -854,8 +1581,8 @@ helm:
         image:
           repository: rancher/mirrored-prometheus-prometheus
           sha: ''
-          tag: v2.28.1
-        initContainers: []
+          tag: v2.27.1
+        initContainers: null
         listenLocal: false
         logFormat: logfmt
         logLevel: info
@@ -876,15 +1603,15 @@ helm:
         probeSelectorNilUsesHelmValues: true
         prometheusExternalLabelName: ''
         prometheusExternalLabelNameClear: false
-        prometheusRulesExcludedFromEnforce: []
+        prometheusRulesExcludedFromEnforce: null
         proxy:
           image:
             repository: rancher/mirrored-library-nginx
             tag: 1.21.1-alpine
         query: {}
         queryLogFile: false
-        remoteRead: []
-        remoteWrite: []
+        remoteRead: null
+        remoteWrite: null
         remoteWriteDashboards: false
         replicaExternalLabelName: ''
         replicaExternalLabelNameClear: false
@@ -892,7 +1619,7 @@ helm:
         resources:
           limits:
             cpu: 1000m
-            memory: 3000Mi
+            memory: 1500Mi
           requests:
             cpu: 750m
             memory: 750Mi
@@ -904,7 +1631,7 @@ helm:
         ruleSelectorNilUsesHelmValues: false
         scrapeInterval: 1m
         scrapeTimeout: ''
-        secrets: []
+        secrets: null
         securityContext:
           fsGroup: 2000
           runAsGroup: 2000
@@ -916,9 +1643,9 @@ helm:
         shards: 1
         storageSpec: {}
         thanos: {}
-        tolerations: []
-        topologySpreadConstraints: []
-        volumeMounts: []
+        tolerations: null
+        topologySpreadConstraints: null
+        volumeMounts: null
         volumes:
           - emptyDir: {}
             name: nginx-home
@@ -927,14 +1654,13 @@ helm:
               name: prometheus-nginx-proxy-config
             name: prometheus-nginx
         walCompression: false
-        web: {}
       service:
         annotations: {}
         clusterIP: ''
-        externalIPs: []
+        externalIPs: null
         labels: {}
         loadBalancerIP: ''
-        loadBalancerSourceRanges: []
+        loadBalancerSourceRanges: null
         nodePort: 30090
         port: 9090
         sessionAffinity: ''
@@ -947,15 +1673,15 @@ helm:
       serviceMonitor:
         bearerTokenFile: null
         interval: ''
-        metricRelabelings: []
-        relabelings: []
+        metricRelabelings: null
+        relabelings: null
         scheme: ''
         selfMonitor: true
         tlsConfig: {}
       servicePerReplica:
         annotations: {}
         enabled: false
-        loadBalancerSourceRanges: []
+        loadBalancerSourceRanges: null
         nodePort: 30091
         port: 9090
         targetPort: 9090
@@ -963,12 +1689,12 @@ helm:
       thanosIngress:
         annotations: {}
         enabled: false
-        hosts: []
+        hosts: null
         labels: {}
         nodePort: 30901
-        paths: []
+        paths: null
         servicePort: 10901
-        tls: []
+        tls: null
       thanosService:
         annotations: {}
         clusterIP: None
@@ -979,10 +1705,6 @@ helm:
         portName: grpc
         targetPort: grpc
         type: ClusterIP
-        httpNodePort: 30902
-        httpPort: 10902
-        httpPortName: http
-        targetHttpPort: http
       thanosServiceExternal:
         annotations: {}
         enabled: false
@@ -992,35 +1714,145 @@ helm:
         portName: grpc
         targetPort: grpc
         type: LoadBalancer
-        httpNodePort: 30902
-        httpPort: 10902
-        httpPortName: http
-        loadBalancerIP: ''
-        targetHttpPort: http
-      extraSecret:
-        annotations: {}
-        data: {}
-      thanosServiceMonitor:
-        enabled: false
-        interval: ''
-        scheme: ''
-        tlsConfig: {}
     prometheus-adapter:
+      affinity: {}
+      certManager:
+        caCertDuration: 43800h
+        certDuration: 8760h
+        enabled: false
+      dnsConfig: {}
       enabled: true
+      extraArguments: null
+      extraVolumeMounts: null
+      extraVolumes: null
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
+      hostNetwork:
+        enabled: false
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-directxman12-k8s-prometheus-adapter
+        tag: v0.8.4
+      listenPort: 6443
+      logLevel: 4
+      metricsRelistInterval: 1m
+      nodeSelector: {}
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        maxUnavailable: 1
+      podLabels: {}
+      priorityClassName: ''
       prometheus:
+        path: ''
         port: 9090
         url: http://rancher-monitoring-prometheus.cattle-monitoring-system.svc
       psp:
         create: true
+      rbac:
+        create: true
+      replicas: 1
+      resources: {}
+      rules:
+        custom: null
+        default: true
+        external: null
+        resource: {}
+      service:
+        annotations: {}
+        port: 443
+        type: ClusterIP
+      serviceAccount:
+        annotations: {}
+        create: true
+      tls:
+        ca: '# Public CA file that signed the APIService'
+        certificate: '# Public key of the APIService'
+        enable: false
+        key: '# Private key of the APIService'
+      tolerations: null
     prometheus-node-exporter:
+      affinity: {}
+      configmaps: null
+      containerSecurityContext: {}
+      dnsConfig: {}
+      endpoints: null
       extraArgs:
         - >-
           --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
         - >-
           --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+      extraHostVolumeMounts: null
+      extraInitContainers: null
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
+      hostNetwork: true
+      hostRootFsMount: true
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-prometheus-node-exporter
+        tag: v1.1.2
       namespaceOverride: ''
+      nodeSelector: {}
+      podAnnotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
       podLabels:
         jobLabel: node-exporter
+      prometheus:
+        monitor:
+          additionalLabels: {}
+          enabled: false
+          namespace: ''
+          relabelings: null
+          scheme: http
+          scrapeTimeout: 10s
+          tlsConfig: {}
+      rbac:
+        create: true
+        pspAnnotations: {}
+        pspEnabled: true
       resources:
         limits:
           cpu: 200m
@@ -1028,9 +1860,35 @@ helm:
         requests:
           cpu: 100m
           memory: 30Mi
+      secrets: null
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
       service:
+        annotations:
+          prometheus.io/scrape: 'true'
+        listenOnAllInterfaces: true
+        nodePort: null
         port: 9796
         targetPort: 9796
+        type: ClusterIP
+      serviceAccount:
+        annotations: {}
+        create: true
+        imagePullSecrets: null
+      sidecarVolumeMount: null
+      sidecars: null
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      updateStrategy:
+        rollingUpdate:
+          maxUnavailable: 1
+        type: RollingUpdate
     prometheusOperator:
       admissionWebhooks:
         caBundle: ''
@@ -1043,9 +1901,9 @@ helm:
           enabled: true
           image:
             pullPolicy: IfNotPresent
-            repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
+            repository: rancher/mirrored-jettech-kube-webhook-certgen
             sha: ''
-            tag: v1.0
+            tag: v1.5.2
           nodeSelector: {}
           podAnnotations: {}
           priorityClassName: ''
@@ -1054,12 +1912,12 @@ helm:
             runAsGroup: 2000
             runAsNonRoot: true
             runAsUser: 2000
-          tolerations: []
+          tolerations: null
       affinity: {}
-      alertmanagerInstanceNamespaces: []
+      alertmanagerInstanceNamespaces: null
       configReloaderCpu: 100m
       configReloaderMemory: 50Mi
-      denyNamespaces: []
+      denyNamespaces: null
       dnsConfig: {}
       enabled: true
       hostNetwork: false
@@ -1067,7 +1925,7 @@ helm:
         pullPolicy: IfNotPresent
         repository: rancher/mirrored-prometheus-operator-prometheus-operator
         sha: ''
-        tag: v0.50.0
+        tag: v0.48.0
       kubeletService:
         enabled: true
         namespace: kube-system
@@ -1078,8 +1936,8 @@ helm:
       prometheusConfigReloaderImage:
         repository: rancher/mirrored-prometheus-operator-prometheus-config-reloader
         sha: ''
-        tag: v0.50.0
-      prometheusInstanceNamespaces: []
+        tag: v0.48.0
+      prometheusInstanceNamespaces: null
       resources:
         limits:
           cpu: 200m
@@ -1094,13 +1952,13 @@ helm:
         runAsNonRoot: true
         runAsUser: 65534
       service:
-        additionalPorts: []
+        additionalPorts: null
         annotations: {}
         clusterIP: ''
-        externalIPs: []
+        externalIPs: null
         labels: {}
         loadBalancerIP: ''
-        loadBalancerSourceRanges: []
+        loadBalancerSourceRanges: null
         nodePort: 30080
         nodePortTls: 30443
         type: ClusterIP
@@ -1109,25 +1967,46 @@ helm:
         name: ''
       serviceMonitor:
         interval: ''
-        metricRelabelings: []
-        relabelings: []
+        metricRelabelings: null
+        relabelings: null
         scrapeTimeout: ''
         selfMonitor: true
-      thanosRulerInstanceNamespaces: []
+      thanosRulerInstanceNamespaces: null
       tls:
         enabled: true
         internalPort: 8443
         tlsMinVersion: VersionTLS13
-      tolerations: []
-      thanosImage:
-        repository: rancher/mirrored-thanos-thanos
-        sha: ''
-        tag: v0.17.2
+      tolerations: null
     rke2ControllerManager:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/master: 'true'
         port: 10011
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1136,12 +2015,76 @@ helm:
         useLocalhost: true
       component: kube-controller-manager
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10252
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     rke2Etcd:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/etcd: 'true'
         port: 10014
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1150,7 +2093,46 @@ helm:
         useLocalhost: true
       component: kube-etcd
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 2381
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     rke2IngressNginx:
       clients:
         affinity:
@@ -1165,10 +2147,32 @@ helm:
                 namespaces:
                   - kube-system
                 topologyKey: kubernetes.io/hostname
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
         deployment:
           enabled: false
           replicas: 1
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10015
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1177,14 +2181,119 @@ helm:
         useLocalhost: true
       component: ingress-nginx
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10254
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     rke2Proxy:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10013
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
+        tolerations: null
         useLocalhost: true
       component: kube-proxy
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10249
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
       tolerations:
         - effect: NoExecute
           operator: Exists
@@ -1192,9 +2301,34 @@ helm:
           operator: Exists
     rke2Scheduler:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/master: 'true'
         port: 10012
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1203,12 +2337,76 @@ helm:
         useLocalhost: true
       component: kube-scheduler
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10251
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     rkeControllerManager:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/controlplane: 'true'
         port: 10011
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1217,31 +2415,160 @@ helm:
         useLocalhost: true
       component: kube-controller-manager
       enabled: true
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10252
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
+            proxyUrl: >-
+              http://pushprox-kube-controller-manager-proxy.cattle-monitoring-system.svc:8080
     rkeEtcd:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
         https:
           caCertFile: kube-ca.pem
           certDir: /etc/kubernetes/ssl
           certFile: kube-etcd-*.pem
           enabled: true
+          insecureSkipVerify: false
           keyFile: kube-etcd-*-key.pem
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/etcd: 'true'
         port: 10014
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
           - effect: NoSchedule
             operator: Exists
+        useLocalhost: false
       component: kube-etcd
       enabled: true
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 2379
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - params:
+              _scheme:
+                - https
+            port: metrics
+            proxyUrl: http://pushprox-kube-etcd-proxy.cattle-monitoring-system.svc:8080
     rkeIngressNginx:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/worker: 'true'
         port: 10015
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1250,10 +2577,75 @@ helm:
         useLocalhost: true
       component: ingress-nginx
       enabled: false
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10254
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
     rkeProxy:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
+        nodeSelector: {}
         port: 10013
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1262,12 +2654,77 @@ helm:
         useLocalhost: true
       component: kube-proxy
       enabled: true
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10249
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
+            proxyUrl: http://pushprox-kube-proxy-proxy.cattle-monitoring-system.svc:8080
     rkeScheduler:
       clients:
+        affinity: {}
+        command:
+          - pushprox-client
+        copyCertsImage:
+          repository: rancher/mirrored-library-busybox
+          tag: 1.31.1
+        deployment:
+          enabled: false
+          replicas: 0
+        enabled: true
+        https:
+          caCertFile: ''
+          certDir: ''
+          certFile: ''
+          enabled: false
+          insecureSkipVerify: false
+          keyFile: ''
+          useServiceAccountCredentials: false
+        image:
+          repository: rancher/pushprox-client
+          tag: v0.1.0-rancher2-client
         nodeSelector:
           node-role.kubernetes.io/controlplane: 'true'
         port: 10012
+        proxyUrl: ''
+        rbac:
+          additionalRules: null
+        resources: {}
         tolerations:
           - effect: NoExecute
             operator: Exists
@@ -1276,4 +2733,44 @@ helm:
         useLocalhost: true
       component: kube-scheduler
       enabled: true
+      global:
+        cattle:
+          clusterId: c-vrfqq
+          clusterName: contests
+          rkePathPrefix: ''
+          rkeWindowsPathPrefix: ''
+          systemDefaultRegistry: ''
+          url: https://rancher.azure.eng.rancher.space
+          windows:
+            enabled: false
+        imagePullSecrets: null
+        kubectl:
+          pullPolicy: IfNotPresent
+          repository: rancher/kubectl
+          tag: v1.20.2
+        rbac:
+          create: true
+          pspAnnotations: {}
+          pspEnabled: true
+          userRoles:
+            aggregateToDefaultRoles: true
+            create: true
+        systemDefaultRegistry: ''
       metricsPort: 10251
+      namespaceOverride: ''
+      proxy:
+        command:
+          - pushprox-proxy
+        enabled: true
+        image:
+          repository: rancher/pushprox-proxy
+          tag: v0.1.0-rancher2-proxy
+        nodeSelector: {}
+        port: 8080
+        resources: {}
+        tolerations: null
+      serviceMonitor:
+        enabled: true
+        endpoints:
+          - port: metrics
+            proxyUrl: http://pushprox-kube-scheduler-proxy.cattle-monitoring-system.svc:8080
