@@ -826,7 +826,7 @@ helm:
           - port: metrics
     ingressNginx:
       enabled: true
-      namespace: ingress-nginx
+      namespace: kube-system
       service:
         port: 9913
         targetPort: 10254
