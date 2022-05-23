@@ -4,6 +4,18 @@ helm:
   chart: rancher-monitoring
   version: 100.0.0+up16.6.0
   releaseName: rancher-monitoring
+  diff:
+  comparePatches:
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: MutatingWebhookConfiguration
+      name: rancher-monitoring-admission
+      operations:
+        - {"op":"remove", "path":"/webhooks"}
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: rancher-monitoring-admission
+      operations:
+        - {"op":"remove", "path":"/webhooks"}
   values:
     additionalPrometheusRulesMap: {}
     alertmanager:
