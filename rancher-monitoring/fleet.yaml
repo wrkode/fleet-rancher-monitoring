@@ -17,7 +17,7 @@ helm:
       operations:
         - {"op":"remove", "path":"/webhooks"}
 targetCustomizations:
-- name: skodatest
+- name: development
   helm:
     values:
       rke2Etcd:
@@ -31,7 +31,7 @@ targetCustomizations:
   clusterSelector:
     matchLabels:
       env: dev
- - name: rke2hubble
+ - name: production
   helm:
     values:
      rke2Etcd:
