@@ -20,29 +20,29 @@ targetCustomizations:
 - name: skodatest
   helm:
     values:
-    rke2Etcd:
-      enabled: true
-    rke2Scheduler:
-      enabled: true
-    rke2IngressNginx:
-      enabled: true
-    alermanager:
-      enabled: false
-      clusterSelector:
-        matchLabels:
-          env: dev
+      rke2Etcd:
+        enabled: true
+      rke2Scheduler:
+        enabled: true
+      rke2IngressNginx:
+        enabled: true
+      alermanager:
+        enabled: false
+  clusterSelector:
+    matchLabels:
+      env: dev
  - name: rke2hubble
   helm:
     values:
-    rke2Etcd:
-      enabled: true
-     rke2IngressNginx:
-      enabled: true
-    rke2Scheduler:
-      enabled: true
-    alermanager:
-      enabled: true
-      clusterSelector:
-        matchLabels:
-          env: prod
+     rke2Etcd:
+        enabled: true
+      rke2IngressNginx:
+        enabled: true
+      rke2Scheduler:
+        enabled: true
+      alermanager:
+        enabled: true
+  clusterSelector:
+    matchLabels:
+      env: prod
     
