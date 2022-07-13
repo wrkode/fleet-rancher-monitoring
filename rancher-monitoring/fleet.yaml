@@ -31,11 +31,11 @@ targetCustomizations:
   clusterSelector:
     matchLabels:
       env: dev
- - name: production
+- name: production
   helm:
     values:
-     rke2Etcd:
-        enabled: true
+      rke2Etcd:
+         enabled: true
       rke2IngressNginx:
         enabled: true
       rke2Scheduler:
@@ -44,5 +44,4 @@ targetCustomizations:
         enabled: true
   clusterSelector:
     matchLabels:
-      env: prod
-    
+     env: prod
